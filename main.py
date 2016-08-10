@@ -34,32 +34,25 @@ def escape_html(s):
     return cgi.escape(s, quote = True)
 
 def valid_month(month):
-    month1 = month.capitalize()
-    if month1 in months:
-        return month1
-    else:
-        return None
+    if month:
+        cap_month= month.capitalize()
+    if cap_month in months:
+        return cap_month
 
 def valid_day(day):
-    if(type(day)==str and day.isdigit()):
-        day = int(day)
-        if(day<32 and day>0):
-            return day
-    elif(type(day)==int and day<32 and day>0):
+    if day and day.isdigit():
+        day=int(day)
+    if day>0 and day<=31:
         return day
-    else:
-        return None
 
 def valid_year(year):
-    if(type(year)==str and year.isdigit() and int(year)<2021 and int(year)>1899):
-        return int(year)
-    elif(type(year)==int and year<2021 and year>1899):
+    if year and year.isdigit():
+        year=int(year)
+    if year>1900 and year<2020:
         return year
-    else:
-        return None
 
 form="""
-<form>
+<form action="/" method="post">
     What is your birthdate?
     <br>
     <label>
@@ -92,7 +85,6 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.write_form()
 
-class TestHandler(webapp2.RequestHandler):
     def post(self):
         user_month=self.request.get('month')
         user_day=self.request.get('day')
